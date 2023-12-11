@@ -27,15 +27,10 @@ while True:
     fuel_pressure_ps10_val = 0
     oil_pressure_ps10_val = 0
 
-    print("\nEng Unity: " + str(map_ps10_val))
-
     # Manifold absolute pressure (convertions)
     map_psi = convert.ps10_to_psi(map_ps10_val)
     map_kgcm2 = convert.psi_to_kgfcm2(map_psi)
     map_warning = False
-
-    print("Convertion PSI: " + str(map_psi))
-    print("Convertion Kg: " + str(map_kgcm2))
 
     # Fuel line pressure (convertions)
     fuel_pressure_psi = convert.ps10_to_psi(fuel_pressure_ps10_val)
@@ -47,15 +42,20 @@ while True:
     oil_pressure_bar = convert.psi_to_bar(oil_pressure_psi)
     oil_pressure_warning = False
 
-    if map_kgcm2 and map_kgcm2 > 1:
+    # BYPASS FAKE INFORMATION
+    map_kgcm2 = random.randint(0, 160)/100
+    oil_pressure_bar = random.randint(100, 900)/100
+    fuel_pressure_bar = random.randint(100, 900)/100
+
+    if map_kgcm2 > 1:
         map_warning = True
         led.on()
 
-    if fuel_pressure_bar and fuel_pressure_bar < 2:
+    if fuel_pressure_bar < 2:
         fuel_pressure_warning = True
         led.on()
 
-    if oil_pressure_bar and oil_pressure_bar < 3:
+    if oil_pressure_bar < 3:
         oil_pressure_warning = True
         led.on()
 
@@ -85,4 +85,4 @@ while True:
 
     oled.show()
 
-    time.sleep_ms(50)
+    time.sleep_ms(200)
